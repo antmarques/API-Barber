@@ -2,6 +2,7 @@ package com.api.barber.model.services;
 
 import com.api.barber.model.entities.ProductEntity;
 import com.api.barber.model.repositories.ProductRepository;
+import com.api.barber.model.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,6 @@ public class ProductService {
 
     public ProductEntity findById(Long id) {
         Optional<ProductEntity> entity = productRepository.findById(id);
-        return entity.get();
+        return entity.orElseThrow(() -> new ResourceNotFoundException(id));
     }
-
 }

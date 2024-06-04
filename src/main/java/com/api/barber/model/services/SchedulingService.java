@@ -2,6 +2,7 @@ package com.api.barber.model.services;
 
 import com.api.barber.model.entities.SchedulingEntity;
 import com.api.barber.model.repositories.SchedulingRepository;
+import com.api.barber.model.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,6 @@ public class SchedulingService {
 
     public SchedulingEntity findById(Long id) {
         Optional<SchedulingEntity> entity = schedulingRepository.findById(id);
-        return entity.get();
+        return entity.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 }
