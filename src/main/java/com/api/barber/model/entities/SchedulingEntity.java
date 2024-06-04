@@ -5,7 +5,9 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_scheduling")
@@ -24,24 +26,22 @@ public class SchedulingEntity implements Serializable {
 
     private Date date;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_product")
-    private ProductEntity product;
-
     @ManyToOne
     @JoinColumn(name = "id_user")
     private UserEntity user;
+
+    @OneToMany(mappedBy = "scheduling", cascade = CascadeType.ALL)
+    private List<ItemSchedulingEntity> items = new ArrayList<>();
 
     private Boolean enable;
 
     public SchedulingEntity() {
     }
 
-    public SchedulingEntity(Long id, String description, Date date, ProductEntity product, UserEntity user, Boolean enable) {
+    public SchedulingEntity(Long id, String description, Date date, UserEntity user, Boolean enable) {
         this.id = id;
         this.description = description;
         this.date = date;
-        this.product = product;
         this.user = user;
         this.enable = enable;
     }

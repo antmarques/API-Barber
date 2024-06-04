@@ -2,12 +2,18 @@ package com.api.barber.model.dto;
 
 import com.api.barber.model.entities.SchedulingEntity;
 import lombok.Data;
-
+import java.io.Serial;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
-public class SchedulingDto {
+public class SchedulingDto implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Long id;
 
@@ -19,7 +25,7 @@ public class SchedulingDto {
 
     private UserDto user;
 
-    private ProductDto product;
+    private List<ItemSchedulingDto> list = new ArrayList<>();
 
     private Boolean enable;
 
@@ -28,7 +34,6 @@ public class SchedulingDto {
         description = entity.getDescription();
         date = entity.getDate();
         user = new UserDto(entity.getUser());
-        product = new ProductDto(entity.getProduct());
         enable = entity.getEnable();
     }
 

@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_product")
@@ -18,6 +20,9 @@ public class ProductEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq")
     @SequenceGenerator(name = "product_seq_gen", sequenceName = "product_id_seq")
     private Long id;
+
+    @OneToMany(mappedBy = "product")
+    private List<ItemSchedulingEntity> items = new ArrayList<>();
 
     private String name;
 
