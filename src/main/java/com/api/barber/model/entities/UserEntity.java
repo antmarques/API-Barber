@@ -47,7 +47,6 @@ public class UserEntity implements Serializable {
         this.name = name;
         this.email = email;
         this.birthdate = birthdate;
-        this.birthdateFormat = DateUtil.toStringFormat(this.birthdate);
         this.password = password;
         this.isAdm = isAdm;
         this.enable = enable;

@@ -20,6 +20,9 @@ public class UserService {
 
     public List<UserEntity> findAll() {
         List<UserEntity> list = userRepository.findAll();
+        if (list.isEmpty()) {
+            throw new ResourceNotFoundException("List of users is empty");
+        }
         list.forEach(x -> {
             if (x != null) {
                 x.setBirthdateFormat(DateUtil.toStringFormat(x.getBirthdate()));

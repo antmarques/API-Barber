@@ -1,5 +1,7 @@
 package com.api.barber.model.entities;
 
+import com.api.barber.model.services.utils.DateUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,14 +20,17 @@ public class SchedulingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scheduling_seq")
-    @SequenceGenerator(name = "scheduling_seq_gen", sequenceName = "scheduling_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String description;
 
     private Date date;
 
+    @Transient
+    private String dateFormat;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_user")
     private UserEntity user;

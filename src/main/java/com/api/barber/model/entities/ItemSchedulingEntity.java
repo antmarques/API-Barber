@@ -16,8 +16,7 @@ public class ItemSchedulingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_scheduling_seq")
-    @SequenceGenerator(name = "item_scheduling_seq_gen", sequenceName = "item_scheduling_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonIgnore
