@@ -1,8 +1,8 @@
 package com.api.barber.model.entities;
 
+import com.api.barber.model.services.utils.DateUtil;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,8 +18,7 @@ public class UserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    @SequenceGenerator(name = "users_seq_gen", sequenceName = "users_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -27,6 +26,9 @@ public class UserEntity implements Serializable {
     private String email;
 
     private Date birthdate;
+
+    @Transient
+    private String birthdateFormat;
 
     private String password;
 
@@ -45,6 +47,7 @@ public class UserEntity implements Serializable {
         this.name = name;
         this.email = email;
         this.birthdate = birthdate;
+        this.birthdateFormat = DateUtil.toStringFormat(this.birthdate);
         this.password = password;
         this.isAdm = isAdm;
         this.enable = enable;

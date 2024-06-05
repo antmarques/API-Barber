@@ -1,12 +1,13 @@
 package com.api.barber.model.dto;
 
 import com.api.barber.model.entities.UserEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
 import java.io.Serial;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class UserDto implements Serializable {
@@ -20,30 +21,30 @@ public class UserDto implements Serializable {
 
     private String email;
 
+    @JsonIgnore
     private Date birthdate;
 
     private String birthdateFormat;
 
     private String password;
 
+    private List<SchedulingDto> schedulingList = new ArrayList<>();
+
     private Boolean isAdm;
 
     private Boolean enable;
+
+    public UserDto() {
+    }
 
     public UserDto(UserEntity entity) {
         id = entity.getId();
         name = entity.getName();
         email = entity.getEmail();
-        birthdate = entity.getBirthdate();
-        birthdateFormat = getBirthdateFormat();
         password = entity.getPassword();
+        birthdate = entity.getBirthdate();
+        birthdateFormat = entity.getBirthdateFormat();
         isAdm = entity.getIsAdm();
         enable = entity.getEnable();
-    }
-
-    public String getBirthdateFormat() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        birthdateFormat = sdf.format(birthdate);
-        return birthdateFormat;
     }
 }

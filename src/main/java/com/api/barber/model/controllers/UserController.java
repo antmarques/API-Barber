@@ -5,15 +5,13 @@ import com.api.barber.model.entities.UserEntity;
 import com.api.barber.model.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "user")
+@RequestMapping(value = "/user")
 public class UserController {
 
     @Autowired
@@ -25,9 +23,16 @@ public class UserController {
         return ResponseEntity.ok().body(entityList.stream().map(UserDto::new).toList());
     }
 
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<UserDto> findById(@PathVariable Long id) {
         UserEntity entity = service.findById(id);
         return ResponseEntity.ok().body(new UserDto(entity));
+    }
+
+    @PostMapping(value = "/create")
+    public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
+        UserEntity entity = service.create(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(new UserDto(entity));
     }
 }
