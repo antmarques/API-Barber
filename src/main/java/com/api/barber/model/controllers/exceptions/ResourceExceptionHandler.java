@@ -24,7 +24,7 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler({RuntimeException.class, NullPointerException.class})
     public ResponseEntity<StandardError> internetError(RuntimeException e, HttpServletRequest request) {
         StandardError err = new StandardError(Instant.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internet Server Error", e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);

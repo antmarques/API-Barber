@@ -29,6 +29,9 @@ public class SchedulingDto implements Serializable {
 
     private Boolean enable;
 
+    public SchedulingDto() {
+    }
+
     public SchedulingDto(SchedulingEntity entity) {
         id = entity.getId();
         description = entity.getDescription();

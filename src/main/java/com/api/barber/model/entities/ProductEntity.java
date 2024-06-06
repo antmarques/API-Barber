@@ -1,5 +1,6 @@
 package com.api.barber.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,7 +26,11 @@ public class ProductEntity implements Serializable {
 
     private String name;
 
+    @JsonIgnore
     private Double price;
+
+    @Transient
+    private String priceFormat;
 
     private Boolean enable;
 

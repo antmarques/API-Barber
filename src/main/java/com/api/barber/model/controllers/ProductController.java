@@ -5,15 +5,14 @@ import com.api.barber.model.entities.ProductEntity;
 import com.api.barber.model.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "product")
+@RequestMapping(value = "/product")
 public class ProductController {
 
     @Autowired
@@ -29,5 +28,12 @@ public class ProductController {
     public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
         ProductEntity entity = service.findById(id);
         return ResponseEntity.ok().body(new ProductDto(entity));
+    }
+
+    @PostMapping(value = "/create")
+    public ResponseEntity<ProductDto> create(@RequestBody ProductDto product) {
+        ProductEntity entity = service.create(product);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.getId()).toUri();
+        return ResponseEntity.created(uri).body(new ProductDto(entity));
     }
 }

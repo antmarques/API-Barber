@@ -1,6 +1,7 @@
 package com.api.barber.model.dto;
 
 import com.api.barber.model.entities.ProductEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serial;
@@ -17,21 +18,21 @@ public class ProductDto implements Serializable {
 
     private String name;
 
+    @JsonIgnore
     private Double price;
 
     private String priceFormat;
 
     private Boolean enable;
 
+    public ProductDto() {
+    }
+
     public ProductDto(ProductEntity entity) {
         id = entity.getId();
         name = entity.getName();
         price = entity.getPrice();
-        priceFormat = getPriceFormat();
+        priceFormat = entity.getPriceFormat();
         enable = entity.getEnable();
-    }
-
-    public String getPriceFormat() {
-        return NumberFormat.getCurrencyInstance().format(price);
     }
 }
