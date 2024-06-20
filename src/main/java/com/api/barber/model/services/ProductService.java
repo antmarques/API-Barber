@@ -5,8 +5,11 @@ import com.api.barber.model.entities.ProductEntity;
 import com.api.barber.model.repositories.ProductRepository;
 import com.api.barber.model.services.exceptions.ResourceNotFoundException;
 import com.api.barber.model.services.utils.NumberUtil;
+import com.api.barber.model.services.utils.ProductUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,23 +19,22 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<ProductEntity> findAll() {
+    public List<ProductDto> findAll() {
         List<ProductEntity> list = productRepository.findAll();
+        List<ProductDto> dtoList = new ArrayList<>();
         if (list.isEmpty()){
             throw new ResourceNotFoundException("List of products is empty");
         }
-        list.forEach(x -> {
-            if (x != null) {
-                x.setPriceFormat(NumberUtil.numberFormatBr(x.getPrice()));
-            }
-        });
-        return list;
+        list.forEach(x -> dtoList.add(ProductUtil.convertToDto(x)));
+        return dtoList;
     }
 
-    public ProductEntity findById(Long id) {
+    public ProductDto findById(Long id) {
         Optional<ProductEntity> entity = productRepository.findById(id);
-        entity.ifPresent(x -> x.setPriceFormat(NumberUtil.numberFormatBr(x.getPrice())));
-        return entity.orElseThrow(() -> new ResourceNotFoundException(id));
+        if (entity.isEmpty()) {
+            throw new ResourceNotFoundException(id);
+        }
+        return ProductUtil.convertToDto(entity.get());
     }
 
     public ProductEntity create(ProductDto dto) {

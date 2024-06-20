@@ -4,11 +4,12 @@ import com.api.barber.model.dto.UserDto;
 import com.api.barber.model.entities.UserEntity;
 import com.api.barber.model.repositories.UserRepository;
 import com.api.barber.model.services.exceptions.ResourceNotFoundException;
-import com.api.barber.model.services.utils.DateUtil;
+import com.api.barber.model.services.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,23 +19,22 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<UserEntity> findAll() {
+    public List<UserDto> findAll() {
         List<UserEntity> list = userRepository.findAll();
+        List<UserDto> usersDto = new ArrayList<>();
         if (list.isEmpty()) {
             throw new ResourceNotFoundException("List of users is empty");
         }
-        list.forEach(x -> {
-            if (x != null) {
-                x.setBirthdateFormat(DateUtil.toStringFormat(x.getBirthdate()));
-            }
-        });
-        return list;
+        list.forEach(x -> usersDto.add(UserUtil.convertToDto(x)));
+        return usersDto;
     }
 
-    public UserEntity findById(Long id) {
+    public UserDto findById(Long id) {
         Optional<UserEntity> entity = userRepository.findById(id);
-        entity.ifPresent(userEntity -> userEntity.setBirthdateFormat(DateUtil.toStringFormat(userEntity.getBirthdate())));
-        return entity.orElseThrow(() -> new ResourceNotFoundException(id));
+        if (entity.isEmpty()) {
+            throw new ResourceNotFoundException(id);
+        }
+        return UserUtil.convertToDto(entity.get());
     }
 
     public UserEntity create(UserDto dto) {

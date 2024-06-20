@@ -3,6 +3,7 @@ package com.api.barber.model.controllers;
 import com.api.barber.model.dto.ProductDto;
 import com.api.barber.model.entities.ProductEntity;
 import com.api.barber.model.services.ProductService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +21,14 @@ public class ProductController {
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<ProductDto>> findAll() {
-        List<ProductEntity> listEntity = service.findAll();
-        return ResponseEntity.ok().body(listEntity.stream().map(ProductDto::new).toList());
+        List<ProductDto> listDto = service.findAll();
+        return ResponseEntity.ok().body(listDto);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
-        ProductEntity entity = service.findById(id);
-        return ResponseEntity.ok().body(new ProductDto(entity));
+        ProductDto dto = service.findById(id);
+        return ResponseEntity.ok().body(new ModelMapper().map(dto, ProductDto.class));
     }
 
     @PostMapping(value = "/create")

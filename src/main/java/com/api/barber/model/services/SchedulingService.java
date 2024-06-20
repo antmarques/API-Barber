@@ -12,7 +12,6 @@ import com.api.barber.model.repositories.SchedulingRepository;
 import com.api.barber.model.repositories.UserRepository;
 import com.api.barber.model.services.exceptions.ResourceNotFoundException;
 import com.api.barber.model.services.utils.DateUtil;
-import com.api.barber.model.services.utils.NumberUtil;
 import com.api.barber.model.services.utils.SchedulingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
