@@ -3,10 +3,8 @@ package com.api.barber.model.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,7 +20,7 @@ public class ProductEntity implements Serializable {
     private Long id;
 
     @OneToMany(mappedBy = "product")
-    private List<ItemSchedulingEntity> items = new ArrayList<>();
+    private List<ItemSchedulingEntity> items;
 
     private String name;
 
@@ -37,10 +35,11 @@ public class ProductEntity implements Serializable {
     public ProductEntity() {
     }
 
-    public ProductEntity(Long id, String name, Double price, Boolean enable) {
+    public ProductEntity(Long id, String name, Double price, String priceFormat, Boolean enable) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.priceFormat = priceFormat;
         this.enable = enable;
     }
 }

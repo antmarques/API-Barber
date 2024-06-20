@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +27,8 @@ public class UserDto implements Serializable {
 
     private String password;
 
-    private List<SchedulingDto> schedulingList = new ArrayList<>();
+    @JsonIgnore
+    private List<SchedulingDto> schedulingList;
 
     private Boolean isAdm;
 

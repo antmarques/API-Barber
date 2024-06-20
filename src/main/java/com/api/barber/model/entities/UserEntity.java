@@ -37,7 +37,7 @@ public class UserEntity implements Serializable {
     private Boolean enable;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<SchedulingEntity> shedulings = new ArrayList<>();
+    private List<SchedulingEntity> shedulings;
 
     public UserEntity() {
     }

@@ -3,7 +3,6 @@ package com.api.barber.model.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -31,23 +30,28 @@ public class ItemSchedulingEntity implements Serializable {
 
     private Integer quantity;
 
+    @JsonIgnore
     private Double price;
+
+    @Transient
+    private String priceFormat;
 
     private Boolean enable;
 
     public ItemSchedulingEntity() {
     }
 
-    public ItemSchedulingEntity(Long id, ProductEntity product, SchedulingEntity scheduling, Integer quantity, Double price, Boolean enable) {
+    public ItemSchedulingEntity(Long id, ProductEntity product, SchedulingEntity scheduling, Integer quantity, Double price, String priceFormat, Boolean enable) {
         this.id = id;
         this.product = product;
         this.scheduling = scheduling;
         this.quantity = quantity;
         this.price = price;
+        this.priceFormat = priceFormat;
         this.enable = enable;
     }
 
     public Double getSubTotal() {
-        return price * quantity;
+        return product.getPrice() * quantity;
     }
 }

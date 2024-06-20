@@ -25,28 +25,29 @@ public class SchedulingEntity implements Serializable {
 
     private String description;
 
+    @JsonIgnore
     private Date date;
 
     @Transient
     private String dateFormat;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_user")
     private UserEntity user;
 
     @OneToMany(mappedBy = "scheduling", cascade = CascadeType.ALL)
-    private List<ItemSchedulingEntity> items = new ArrayList<>();
+    private List<ItemSchedulingEntity> items;
 
     private Boolean enable;
 
     public SchedulingEntity() {
     }
 
-    public SchedulingEntity(Long id, String description, Date date, UserEntity user, Boolean enable) {
+    public SchedulingEntity(Long id, String description, Date date, String dateFormat, UserEntity user, Boolean enable) {
         this.id = id;
         this.description = description;
         this.date = date;
+        this.dateFormat = dateFormat;
         this.user = user;
         this.enable = enable;
     }

@@ -1,13 +1,12 @@
 package com.api.barber.model.dto;
 
 import com.api.barber.model.entities.SchedulingEntity;
+import com.api.barber.model.services.utils.UserUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Data
 public class SchedulingDto implements Serializable {
@@ -19,13 +18,14 @@ public class SchedulingDto implements Serializable {
 
     private String description;
 
+    @JsonIgnore
     private Date date;
 
     private String dateFormat;
 
     private UserDto user;
 
-    private List<ItemSchedulingDto> list = new ArrayList<>();
+    private List<ItemSchedulingDto> items;
 
     private Boolean enable;
 
@@ -36,13 +36,8 @@ public class SchedulingDto implements Serializable {
         id = entity.getId();
         description = entity.getDescription();
         date = entity.getDate();
-        user = new UserDto(entity.getUser());
+        dateFormat = entity.getDateFormat();
+        user = UserUtil.convertToDto(entity.getUser());
         enable = entity.getEnable();
-    }
-
-    public String getDateFormat() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        dateFormat = sdf.format(date);
-        return dateFormat;
     }
 }

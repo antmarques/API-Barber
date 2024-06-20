@@ -3,17 +3,16 @@ package com.api.barber.model.controllers;
 import com.api.barber.model.dto.SchedulingDto;
 import com.api.barber.model.entities.SchedulingEntity;
 import com.api.barber.model.services.SchedulingService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "scheduling")
+@RequestMapping(value = "/scheduling")
 public class SchedulingController {
 
     @Autowired
@@ -21,13 +20,20 @@ public class SchedulingController {
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<SchedulingDto>> findAll() {
-        List<SchedulingEntity> listEntity = service.findAll();
-        return ResponseEntity.ok().body(listEntity.stream().map(SchedulingDto::new).toList());
+        List<SchedulingDto> listDto = service.findAll();
+        return ResponseEntity.ok().body(listDto);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<SchedulingDto> findById(@PathVariable Long id) {
-        SchedulingEntity entity = service.findById(id);
-        return ResponseEntity.ok().body(new SchedulingDto(entity));
+        SchedulingDto dto = service.findById(id);
+        return ResponseEntity.ok().body(new ModelMapper().map(dto, SchedulingDto.class));
+    }
+
+    @PostMapping(value = "/create")
+    public ResponseEntity<SchedulingDto> create(@RequestBody SchedulingDto scheduling) {
+        SchedulingEntity entity = service.create(scheduling);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(scheduling.getId()).toUri();
+        return ResponseEntity.created(uri).body(new SchedulingDto(entity));
     }
 }

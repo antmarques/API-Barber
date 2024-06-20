@@ -1,12 +1,10 @@
 package com.api.barber.model.dto;
 
 import com.api.barber.model.entities.ItemSchedulingEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
 import java.io.Serial;
 import java.io.Serializable;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 @Data
 public class ItemSchedulingDto implements Serializable {
@@ -18,27 +16,28 @@ public class ItemSchedulingDto implements Serializable {
 
     private ProductDto product;
 
+    @JsonIgnore
     private SchedulingDto scheduling;
 
     private Integer quantity;
 
+    @JsonIgnore
     private Double price;
 
     private String priceFormat;
 
     private Boolean enable;
 
+    public ItemSchedulingDto() {
+    }
+
     public ItemSchedulingDto(ItemSchedulingEntity entity) {
         id = entity.getId();
         product = new ProductDto(entity.getProduct());
         scheduling = new SchedulingDto(entity.getScheduling());
         quantity = entity.getQuantity();
-        price = entity.getPrice();
-        priceFormat = getPriceFormat();
+        price = product.getPrice();
+        priceFormat = entity.getPriceFormat();
         enable = entity.getEnable();
-    }
-
-    public String getPriceFormat() {
-        return NumberFormat.getCurrencyInstance(Locale.of("pt", "BR")).format(price);
     }
 }

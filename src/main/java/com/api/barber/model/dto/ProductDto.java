@@ -3,10 +3,8 @@ package com.api.barber.model.dto;
 import com.api.barber.model.entities.ProductEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
 import java.io.Serial;
 import java.io.Serializable;
-import java.text.NumberFormat;
 
 @Data
 public class ProductDto implements Serializable {
