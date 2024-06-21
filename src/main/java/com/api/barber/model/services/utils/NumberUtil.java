@@ -12,4 +12,8 @@ public class NumberUtil {
     public static String numberFormatUsa(Double value) {
         return NumberFormat.getCurrencyInstance(Locale.US).format(value);
     }
+
+    public static Double numberFormatBr(String value) {
+        return Double.parseDouble(value);
+    }
 }

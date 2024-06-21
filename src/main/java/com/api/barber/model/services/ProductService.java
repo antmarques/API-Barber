@@ -8,7 +8,6 @@ import com.api.barber.model.services.utils.NumberUtil;
 import com.api.barber.model.services.utils.ProductUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,10 +46,46 @@ public class ProductService {
         ProductEntity entity = new ProductEntity();
         entity.setId(dto.getId());
         entity.setName(dto.getName());
-        entity.setPrice(dto.getPrice());
-        entity.setPriceFormat(NumberUtil.numberFormatBr(dto.getPrice()));
+        entity.setPriceFormat(dto.getPriceFormat());
+        entity.setPrice(NumberUtil.numberFormatBr(entity.getPriceFormat()));
         entity.setEnable(dto.getEnable());
 
+        return productRepository.save(entity);
+    }
+
+    public ProductEntity update(ProductDto dto) {
+        if (dto == null) {
+            throw new NullPointerException("Object is null");
+        }
+        if (dto.getId() == null || dto.getId() <= 0) {
+            throw new ResourceNotFoundException(dto.getId());
+        }
+
+        ProductEntity entity = productRepository.getReferenceById(dto.getId());
+        if (dto.getName() != null) {
+            entity.setName(dto.getName());
+        }
+        if (dto.getPriceFormat() != null) {
+            entity.setPriceFormat(dto.getPriceFormat());
+            entity.setPrice(NumberUtil.numberFormatBr(entity.getPriceFormat()));
+        }
+        return productRepository.save(entity);
+    }
+
+    public ProductEntity enableOrDisable(ProductDto dto){
+        if (dto == null) {
+            throw new NullPointerException("Object is null");
+        }
+        if (dto.getId() == null || dto.getId() <= 0) {
+            throw new ResourceNotFoundException(dto.getId());
+        }
+
+        ProductEntity entity = productRepository.getReferenceById(dto.getId());
+        if (entity.getEnable()) {
+            entity.setEnable(false);
+        } else {
+            entity.setEnable(true);
+        }
         return productRepository.save(entity);
     }
 }
