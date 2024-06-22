@@ -34,6 +34,18 @@ public class UserController {
     public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
         UserEntity entity = service.create(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(uri).body(new UserDto(entity));
+        return ResponseEntity.created(uri).body(new ModelMapper().map(new UserDto(entity), UserDto.class));
+    }
+
+    @PutMapping(value = "/update")
+    public ResponseEntity<UserDto> update(@RequestBody UserDto user) {
+        UserEntity entity = service.update(user);
+        return ResponseEntity.ok().body(new ModelMapper().map(new UserDto(entity), UserDto.class));
+    }
+
+    @DeleteMapping(value = "/enableOrDisable")
+    public ResponseEntity<UserDto> enableOrDisable(@RequestBody UserDto user) {
+        UserEntity entity = service.enableOrDisable(user);
+        return ResponseEntity.ok().body(new ModelMapper().map(new UserDto(entity), UserDto.class));
     }
 }
