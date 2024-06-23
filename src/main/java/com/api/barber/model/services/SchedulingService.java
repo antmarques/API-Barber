@@ -100,4 +100,22 @@ public class SchedulingService {
         schedulingRepository.save(entity);
         return entity;
     }
+
+    public SchedulingEntity activeOrDisable(SchedulingDto dto) {
+        if (dto == null) {
+            throw new NullPointerException("Object is null");
+        }
+        if (dto.getId() == null) {
+            throw new ResourceNotFoundException(null);
+        }
+
+        SchedulingEntity entity = schedulingRepository.getReferenceById(dto.getId());
+        if (entity.getEnable()) {
+            entity.setEnable(false);
+        } else {
+            entity.setEnable(true);
+        }
+
+        return schedulingRepository.save(entity);
+    }
 }

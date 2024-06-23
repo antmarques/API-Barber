@@ -36,4 +36,10 @@ public class SchedulingController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(scheduling.getId()).toUri();
         return ResponseEntity.created(uri).body(new SchedulingDto(entity));
     }
+
+    @DeleteMapping(value = "/enableOrDisable")
+    public ResponseEntity<SchedulingDto> enableOrDisable(@RequestBody SchedulingDto scheduling) {
+        SchedulingEntity entity = service.activeOrDisable(scheduling);
+        return ResponseEntity.ok().body(new ModelMapper().map(new SchedulingDto(entity), SchedulingDto.class));
+    }
 }
