@@ -1,6 +1,7 @@
 package com.api.barber.model.controllers;
 
 import com.api.barber.model.dto.SchedulingDto;
+import com.api.barber.model.dto.UserDto;
 import com.api.barber.model.entities.SchedulingEntity;
 import com.api.barber.model.services.SchedulingService;
 import org.modelmapper.ModelMapper;
@@ -28,6 +29,12 @@ public class SchedulingController {
     public ResponseEntity<SchedulingDto> findById(@PathVariable Long id) {
         SchedulingDto dto = service.findById(id);
         return ResponseEntity.ok().body(new ModelMapper().map(dto, SchedulingDto.class));
+    }
+
+    @GetMapping(value = "/byUser")
+    public ResponseEntity<List<SchedulingDto>> findByUser(@RequestBody UserDto user) {
+        List<SchedulingDto> listDto = service.findByUser(user);
+        return ResponseEntity.ok().body(listDto);
     }
 
     @PostMapping(value = "/create")

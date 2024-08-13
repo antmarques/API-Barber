@@ -2,6 +2,7 @@ package com.api.barber.model.services;
 
 import com.api.barber.model.dto.ItemSchedulingDto;
 import com.api.barber.model.dto.SchedulingDto;
+import com.api.barber.model.dto.UserDto;
 import com.api.barber.model.entities.ItemSchedulingEntity;
 import com.api.barber.model.entities.ProductEntity;
 import com.api.barber.model.entities.SchedulingEntity;
@@ -54,6 +55,30 @@ public class SchedulingService {
             throw new ResourceNotFoundException(id);
         }
         return SchedulingUtil.convertToDto(entity.get());
+    }
+
+    public List<SchedulingDto> findByUser(UserDto dto) {
+        if (dto == null) {
+            throw new NullPointerException("Object is null");
+        }
+        if (dto.getId() == null) {
+            throw new ResourceNotFoundException(null);
+        }
+
+        List<SchedulingDto> listDto = new ArrayList<>();
+        List<SchedulingEntity> listEntity = schedulingRepository.findAll();
+        UserEntity userEntity = userRepository.getReferenceById(dto.getId());
+
+        if (!listEntity.isEmpty()) {
+            for (SchedulingEntity se: listEntity) {
+                if (se.getUser().getId().equals(userEntity.getId())) {
+                    listDto.add(SchedulingUtil.convertToDto(se));
+                } else {
+                    throw new ResourceNotFoundException(se.getUser().getId());
+                }
+            }
+        }
+        return listDto;
     }
 
     public SchedulingEntity create(SchedulingDto dto) {

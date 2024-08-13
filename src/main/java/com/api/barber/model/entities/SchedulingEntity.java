@@ -1,13 +1,10 @@
 package com.api.barber.model.entities;
 
-import com.api.barber.model.services.utils.DateUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
