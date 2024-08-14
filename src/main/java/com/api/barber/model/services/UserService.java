@@ -66,8 +66,12 @@ public class UserService {
         entity.setBirthdateFormat(dto.getBirthdateFormat());
         entity.setName(dto.getName());
         entity.setIsAdm(dto.getIsAdm());
-        entity.setEnable(dto.getEnable());
-        entity.setPassword(dto.getPassword());
+        if (dto.getEmail() != null) {
+            entity.setEnable(dto.getEnable());
+        }
+        if (dto.getPassword() != null) {
+            entity.setPassword(UserUtil.encrypterPassword(dto.getPassword()));
+        }
 
         return userRepository.save(entity);
     }
@@ -101,7 +105,7 @@ public class UserService {
             entity.setBirthdate(DateUtil.toDateFormat(entity.getBirthdateFormat()));
         }
         if (dto.getPassword() != null) {
-            entity.setPassword(dto.getPassword());
+            entity.setPassword(UserUtil.encrypterPassword(dto.getPassword()));
         }
 
         return userRepository.save(entity);
